@@ -5,13 +5,13 @@ import com.qfit.board_boot_jpa.entity.BoardEntity;
 import com.qfit.board_boot_jpa.entity.BoardFileEntity;
 import com.qfit.board_boot_jpa.repository.BoardFileRepository;
 import com.qfit.board_boot_jpa.repository.BoardRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -53,6 +53,7 @@ public class BoardService {
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO); //id값이 없기 때문에 밑에서 다시 가져온다.
             Long savedId = boardRepository.save(boardEntity).getId(); //부모게시글에 대한 pk값, boardId
             BoardEntity board = boardRepository.findById(savedId).get();
+
             for (MultipartFile boardFile : boardDTO.getBoardFile()) {
 //                MultipartFile boardFile = boardDTO.getBoardFile();
                 String originalFilename = boardFile.getOriginalFilename();

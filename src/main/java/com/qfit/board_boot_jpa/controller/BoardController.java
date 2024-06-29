@@ -1,7 +1,9 @@
 package com.qfit.board_boot_jpa.controller;
 
 import com.qfit.board_boot_jpa.dto.BoardDTO;
+import com.qfit.board_boot_jpa.dto.CommentDTO;
 import com.qfit.board_boot_jpa.service.BoardService;
+import com.qfit.board_boot_jpa.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ public class BoardController {
 
     //생성자 주입
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/save")
     public String saveForm() {
@@ -50,6 +53,9 @@ public class BoardController {
         * */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        /* 댓글 목록 가져오기 */
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
         return "board/detail";

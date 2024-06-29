@@ -1,5 +1,6 @@
 package com.qfit.board_boot_jpa.dto;
 
+import com.qfit.board_boot_jpa.entity.CommentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +12,19 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentDTO {
     private Long id;
-    private String commonWriter;
+    private String commentWriter;
     private String commentContents;
     private Long boardId;
     private LocalDateTime commentCreatedTime;
+
+    public static CommentDTO toCommentDTO(CommentEntity commentEntity, Long boardId) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(commentEntity.getId());
+        commentDTO.setCommentWriter(commentEntity.getCommentWriter());
+        commentDTO.setCommentContents(commentEntity.getCommentContents());
+        commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
+//        commentDTO.setBoardId(commentEntity.getBoardEntity().getId()); //Service 메서드에 @Transactional
+        commentDTO.setBoardId(boardId);
+        return commentDTO;
+    }
 }
